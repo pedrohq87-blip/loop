@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fluent · Start · Lição 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap">
+<style>
+:root{--navy:#111A2B;--navy2:#1E2A44;--line:#2E3B58;--deep:#0A101C;--cyan:#2DD4EF;--cyan-d:#1A9FB8;--orange:#FF6A1F;--orange-d:#C94E0E;--white:#fff;--slate:#B8C2D6;--light:#F2F4F8}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#070B14;font-family:Montserrat,system-ui,sans-serif;color:var(--white);display:flex;align-items:center;justify-content:center}
+.app{width:min(430px,100vw);height:100dvh;background:var(--navy);display:flex;flex-direction:column;overflow:hidden;position:relative}
+@media (min-width:520px){.app{height:min(900px,96dvh);border-radius:36px;border:2px solid var(--line)}}
+.screen{flex:1;display:flex;flex-direction:column;padding:18px 20px 22px;overflow-y:auto}
+.enter .screen{animation:in .28s ease}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.enter .screen,.mic.on{animation:none}}
+.top{display:flex;align-items:center;justify-content:space-between;min-height:48px;gap:10px}
+.logo{font-weight:900;font-size:30px;line-height:1;display:flex;align-items:flex-end;gap:3px}
+.logo i{width:9px;height:9px;border-radius:5px;background:var(--orange);display:inline-block;margin-bottom:4px}
+.pill{font-size:11px;font-weight:800;letter-spacing:.12em;padding:6px 12px;border-radius:999px;background:var(--cyan);color:var(--navy);text-transform:uppercase;white-space:nowrap}
+.pill.or{background:#2A2620;color:#FF9A5E;letter-spacing:.02em;text-transform:none;font-size:13px}
+.iconbtn{width:46px;height:44px;border-radius:14px;background:var(--navy2);border:2px solid var(--line);box-shadow:0 4px 0 var(--deep);color:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.iconbtn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--deep)}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:60px;border-radius:20px;border:none;font-family:inherit;font-size:17px;font-weight:900;cursor:pointer;padding:12px 18px;text-align:left}
+.btn:active{transform:translateY(4px)}
+.btn.primary{background:var(--cyan);color:var(--navy);box-shadow:0 6px 0 var(--cyan-d)}
+.btn.primary:active{box-shadow:0 2px 0 var(--cyan-d)}
+.btn.orange{background:var(--orange);color:var(--navy);box-shadow:0 6px 0 var(--orange-d)}
+.btn.orange:active{box-shadow:0 2px 0 var(--orange-d)}
+.btn.ghost{background:var(--navy2);color:var(--white);border:2px solid var(--line);box-shadow:0 5px 0 var(--deep);font-weight:800;font-size:15px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.btn small{display:block;font-size:13px;font-weight:700;opacity:.8;margin-top:2px}
+.link{background:none;border:none;color:var(--slate);font:700 13px Montserrat,sans-serif;text-decoration:underline;cursor:pointer;padding:10px}
+.avatar{border-radius:50%;background:var(--cyan);display:block}
+.center{display:flex;flex-direction:column;align-items:center;text-align:center}
+.bubble{position:relative;background:#fff;color:var(--navy);border-radius:24px;padding:18px 20px;margin-top:18px}
+.bubble:before{content:"";position:absolute;left:50%;top:-8px;width:16px;height:16px;margin-left:-8px;background:#fff;transform:rotate(45deg)}
+.bubble h2{font-size:20px;font-weight:900;margin-bottom:6px}
+.bubble p{font-size:15px;font-weight:500;line-height:1.5;color:#3B4558}
+.stack{display:flex;flex-direction:column;gap:14px}
+.grow{flex:1}
+h1{font-size:26px;font-weight:900;letter-spacing:-.01em}
+.muted{color:var(--slate);font-size:14px;font-weight:600;line-height:1.5}
+.field{width:100%;min-height:56px;border-radius:16px;border:2px solid var(--line);background:var(--navy2);color:#fff;font:700 17px Montserrat,sans-serif;padding:0 16px}
+.field:focus{outline:3px solid var(--cyan);outline-offset:1px}
+label.lbl{font-size:13px;font-weight:700;color:var(--slate);text-align:left;width:100%;margin-bottom:6px;display:block}
+.step{display:flex;align-items:center;gap:14px;background:var(--navy2);border:2px solid var(--line);border-radius:20px;padding:14px;cursor:pointer;width:100%;color:#fff;font-family:inherit;text-align:left;box-shadow:0 5px 0 var(--deep)}
+.step.cur{border-color:var(--cyan)}
+.step[disabled]{opacity:.5;cursor:default;box-shadow:none}
+.num{width:42px;height:42px;border-radius:21px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;background:var(--orange);color:var(--navy)}
+.num.ok{background:var(--cyan)}
+.step b{display:block;font-size:16px;font-weight:800}
+.step span{font-size:13px;font-weight:600;color:var(--slate)}
+.bar{height:10px;border-radius:5px;background:#24314D;overflow:hidden}
+.bar>div{height:100%;background:var(--cyan);border-radius:5px;transition:width .4s}
+video{width:100%;max-height:calc(100dvh - 220px);aspect-ratio:9/16;object-fit:contain;background:#000;border-radius:20px;display:block}
+@media (min-width:520px){video{max-height:620px}}
+.q{font-size:21px;font-weight:900;line-height:1.3;margin:6px 0 4px}
+.opt{width:100%;min-height:58px;border-radius:18px;background:var(--navy2);border:2px solid var(--line);color:#fff;font:800 17px Montserrat,sans-serif;text-align:left;padding:12px 16px;cursor:pointer;box-shadow:0 4px 0 var(--deep)}
+.opt.sel{border-color:var(--cyan);background:#16384A}
+.opt.right{border-color:var(--cyan);background:var(--cyan);color:var(--navy)}
+.opt.wrong{border-color:var(--orange);background:#3A2A24}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{min-height:48px;padding:0 16px;border-radius:14px;background:#fff;color:var(--navy);border:none;font:800 17px Montserrat,sans-serif;cursor:pointer;box-shadow:0 4px 0 #CDD3DF}
+.answerline{min-height:64px;border-bottom:3px dashed var(--line);display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:8px 0}
+.fb{border-radius:20px;padding:16px;margin-top:4px}
+.fb.ok{background:#E3F8FC;color:var(--navy)}
+.fb.no{background:#FFE8DB;color:#3A1A08}
+.fb b{display:block;font-size:12px;letter-spacing:.12em;font-weight:900;margin-bottom:4px}
+.fb p{font-size:15px;font-weight:600;line-height:1.45}
+.listen{width:96px;height:96px;border-radius:48px;background:var(--orange);box-shadow:0 6px 0 var(--orange-d);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin:6px auto}
+.chat{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:6px 2px 10px}
+.msg{max-width:86%;padding:12px 15px;border-radius:20px;font-size:15px;font-weight:600;line-height:1.45;white-space:pre-wrap}
+.msg.c{background:#fff;color:var(--navy);align-self:flex-start;border-bottom-left-radius:6px}
+.msg.u{background:var(--cyan);color:var(--navy);align-self:flex-end;border-bottom-right-radius:6px}
+.msg.sys{align-self:center;background:none;color:var(--slate);font-size:12px;text-align:center}
+.composer{display:flex;gap:8px;align-items:center;padding-top:8px}
+.composer .field{min-height:52px;font-size:16px;flex:1;min-width:0}
+.mic{width:52px;height:52px;border-radius:26px;background:var(--orange);border:none;box-shadow:0 4px 0 var(--orange-d);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.avatar.talking{box-shadow:0 0 0 0 rgba(45,212,239,.5);animation:talk 1.2s infinite}
+@keyframes talk{0%{box-shadow:0 0 0 0 rgba(45,212,239,.55)}100%{box-shadow:0 0 0 22px rgba(45,212,239,0)}}
+.mic.on{background:var(--cyan);box-shadow:0 4px 0 var(--cyan-d);animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.send{width:52px;height:52px;border-radius:16px;background:var(--cyan);border:none;box-shadow:0 4px 0 var(--cyan-d);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.send[disabled]{opacity:.4}
+.toggle{display:flex;align-items:center;gap:6px;background:var(--navy2);border:2px solid var(--line);color:#fff;border-radius:999px;padding:8px 12px;font:800 12px Montserrat,sans-serif;cursor:pointer}
+.toggle.on{background:var(--cyan);color:var(--navy);border-color:var(--cyan)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.stat{display:flex;justify-content:space-between;background:var(--navy2);border-radius:16px;padding:14px 16px;font-weight:800;font-size:15px}
+.stat span{color:var(--cyan)}
+</style>
+</head>
+<body>
+<main class="app" id="app" aria-live="polite"></main>
+<script>
+(function () {
+  const $app = document.getElementById('app');
+  const AV = p => 'media/pedro-' + p + '.png';
+  const AGENT_URL = 'https://elevenlabs.io/app/talk-to?agent_id=agent_4401m78rwn5yfsyrd6fe5r7exfww';
+  const ICON = {
+    grid: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg>',
+    back: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m11 6-6 6 6 6"/></svg>',
+    mic: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111A2B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>',
+    send: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111A2B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>',
+    play: '<svg width="18" height="18" viewBox="0 0 24 24" fill="#111A2B" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>',
+    speaker: '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#111A2B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+    vol: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>'
+  };
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  // ---------- state ----------
+  const KEY = 'fluent-proto-l1';
+  let S = { name: '', done: {}, score: null };
+  try { const v = JSON.parse(localStorage.getItem(KEY) || 'null'); if (v) S = Object.assign(S, v); } catch (e) {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+  let screen = S.name ? 'home' : 'welcome';
+
+  // ---------- capabilities ----------
+  let sample = null, tts = null, dict = null, ttsOn = false;
+  const cap = (n) => (window.claude && window.claude.use) ? window.claude.use(n).catch(() => null) : Promise.resolve(null);
+  cap('sample').then(x => { sample = x; if (screen === 'coach') render(); });
+  cap('tts').then(x => { tts = x; if (screen === 'coach' || screen === 'ex') render(); });
+  cap('dictation').then(x => { dict = x; if (dict) wireDictation(); if (screen === 'coach') render(); });
+
+  const STEPS = [
+    { id: 'v1', title: 'Videoaula', sub: 'Falar de você · 2 min', go: 'v1' },
+    { id: 'v2', title: 'Vocabulário', sub: '20 profissões · 2 min', go: 'v2' },
+    { id: 'ex', title: 'Exercícios de fixação', sub: '7 questões · 4 min', go: 'ex' },
+    { id: 'coach', title: 'Conversa com o coach', sub: 'Por voz · 3 min', go: 'coach' }
+  ];
+  const nextStep = () => STEPS.find(s => !S.done[s.id]);
+  const doneCount = () => STEPS.filter(s => S.done[s.id]).length;
+  function go(s) { if (tts) { try { tts.stop(); } catch (e) {} } if (s !== 'coach') endVoice(); screen = s; render(); $app.scrollTop = 0; }
+
+  // ---------- screens ----------
+  function top(title, backTo) {
+    return '<div class="top">' + (backTo ? '<button class="iconbtn" data-go="' + backTo + '" aria-label="Voltar">' + ICON.back + '</button>' : '<span class="logo" aria-label="Fluent">F<i></i></span>') +
+      (title ? '<span style="flex:1;font-weight:800;font-size:16px">' + title + '</span>' : '<span class="grow"></span>') +
+      '<span class="pill">Start · Lição 1</span></div>';
+  }
+
+  function vWelcome() {
+    return '<section class="screen center" style="justify-content:center;gap:18px">' +
+      '<span class="logo" style="font-size:64px">F<i style="width:16px;height:16px;border-radius:8px"></i></span>' +
+      '<span class="pill">Programa de fluência</span>' +
+      '<h1 style="font-size:54px">Start<span style="color:var(--orange)">.</span></h1>' +
+      '<p class="muted">Seu coach de inglês, todos os dias.<br>Um passo de cada vez.</p>' +
+      '<form id="wf" style="width:100%;margin-top:10px" class="stack">' +
+      '<div><label class="lbl" for="nm">Como você quer ser chamado?</label><input id="nm" class="field" autocomplete="given-name" maxlength="24" placeholder="Seu nome" required></div>' +
+      '<p id="nmErr" class="muted" style="color:#FF9A5E;display:none;text-align:left">Digite o seu nome para continuar.</p>' +
+      '<button class="btn primary" type="submit">Começar</button></form></section>';
+  }
+
+  function vHome() {
+    const n = nextStep(); const c = doneCount();
+    let h2, p, main;
+    if (c === 0) { h2 = 'Hi, ' + esc(S.name) + '!'; p = 'Eu sou o Teacher Pedro, o seu coach. Hoje começamos a Lição 1: falar de você e do que você faz. São uns 15 minutos. Vamos?'; main = '<button class="btn primary" data-go="' + n.go + '">' + ICON.play.replace('#111A2B','#111A2B') + '<span>Começar a Lição 1<small>Videoaula · 2 min</small></span></button>'; }
+    else if (n) { h2 = 'Welcome back, ' + esc(S.name) + '!'; p = 'Você já fez ' + c + ' de 4 etapas. A próxima é: ' + n.title.toLowerCase() + '.'; main = '<button class="btn primary" data-go="' + n.go + '"><span>Continuar: ' + n.title + '<small>' + n.sub + '</small></span></button>'; }
+    else { h2 = 'Great job, ' + esc(S.name) + '!'; p = 'Você concluiu a Lição 1. Amanhã eu volto com uma conversa rápida de revisão.'; main = '<button class="btn primary" data-go="coach"><span>Conversar de novo<small>Revisão · 3 min</small></span></button>'; }
+    return '<section class="screen">' +
+      '<div class="top"><span class="logo" aria-label="Fluent">F<i></i></span><span class="grow"></span>' +
+      '<span class="pill or">' + c + '/4 etapas</span>' +
+      '<button class="iconbtn" data-go="trail" aria-label="Abrir a trilha da lição">' + ICON.grid + '</button></div>' +
+      '<div class="center" style="margin-top:6px"><img class="avatar" src="' + AV(c === 4 ? 'apontando' : 'sorrindo') + '" width="170" height="170" alt="Teacher Pedro">' +
+      '<span style="font-size:22px;font-weight:900;margin-top:10px">Teacher Pedro</span></div>' +
+      '<div class="bubble"><h2>' + h2 + '</h2><p>' + p + '</p></div>' +
+      '<div class="stack" style="margin-top:18px">' + main +
+      '<button class="btn ghost" data-go="trail">Ver a trilha da lição</button></div>' +
+      '<span class="grow"></span>' +
+      '<div class="center" style="margin-top:16px"><button class="mic" style="width:76px;height:76px;border-radius:38px" data-go="coach" aria-label="Falar com o Teacher Pedro">' + ICON.mic + '</button>' +
+      '<span class="muted" style="font-size:12px;margin-top:8px">Falar com o coach</span></div></section>';
+  }
+
+  function vTrail() {
+    const n = nextStep(); const c = doneCount();
+    return '<section class="screen">' + top('', 'home') +
+      '<h1 style="margin-top:8px">Falar de você<span style="color:var(--orange)">.</span></h1>' +
+      '<p class="muted" style="margin:4px 0 12px">Lição 1 do Start (A1). Siga a ordem ou escolha uma etapa.</p>' +
+      '<div class="bar" aria-label="Progresso da lição"><div style="width:' + (c * 25) + '%"></div></div>' +
+      '<div class="stack" style="margin-top:18px">' +
+      STEPS.map((s, i) => '<button class="step' + (n && n.id === s.id ? ' cur' : '') + '" data-go="' + s.go + '">' +
+        '<span class="num' + (S.done[s.id] ? ' ok' : '') + '">' + (S.done[s.id] ? '✓' : (i + 1)) + '</span><span><b>' + s.title + '</b><span>' + s.sub + '</span></span></button>').join('') +
+      '<button class="step" disabled><span class="num" style="background:#24314D;color:var(--slate)">5</span><span><b>Material de apoio</b><span>PDF com 50 profissões · no app final</span></span></button>' +
+      '</div><span class="grow"></span><button class="link" data-act="reset">Recomeçar a lição</button></section>';
+  }
+
+  function vVideo(which) {
+    const n = which === 'v1' ? 1 : 2;
+    const t = n === 1 ? 'Videoaula' : 'Vocabulário';
+    return '<section class="screen">' + top(t, 'trail') +
+      '<video id="vid" src="media/parte' + n + '.mp4" poster="media/poster' + n + '.jpg" controls playsinline preload="metadata" style="margin-top:10px"></video>' +
+      '<span class="grow"></span>' +
+      '<div class="stack" style="margin-top:14px"><button class="btn primary" id="vdone" data-act="vdone" data-id="' + which + '">' +
+      (S.done[which] ? 'Continuar' : 'Concluí o vídeo') + '</button></div></section>';
+  }
+
+  // ---------- exercises ----------
+  const EX = [
+    { t: 'choice', q: 'Como dizer “Eu sou professor”?', o: ["I'm teacher.", "I'm a teacher.", 'I a teacher.'], a: 1,
+      ok: 'Em inglês, a profissão vem sempre com a ou an.', no: 'Faltou o artigo. O certo é: I\'m a teacher.' },
+    { t: 'choice', q: "Complete: I'm ___ engineer.", o: ['a', 'an'], a: 1,
+      ok: 'Engineer começa com som de vogal, então usamos an.', no: 'Antes de som de vogal, use an: an engineer.' },
+    { t: 'choice', q: 'Complete: I ___ in Curitiba.', o: ['live', 'work', 'love'], a: 0,
+      ok: 'I live in + cidade: é onde você mora.', no: 'Para dizer onde mora, use I live in: I live in Curitiba.' },
+    { t: 'order', q: 'Monte a frase: “Eu trabalho num banco.”', w: ['at', 'I', 'a', 'bank.', 'work'], a: 'I work at a bank.',
+      ok: 'I work at + o lugar onde você trabalha.', no: 'A ordem certa é: I work at a bank.' },
+    { t: 'choice', q: 'Qual frase está correta?', o: ["I'm work at a startup.", 'I work at a startup.', 'I working at a startup.'], a: 1,
+      ok: 'Para falar do trabalho, use só o verbo: I work.', no: 'Não use I\'m com work. O certo é: I work at a startup.' },
+    { t: 'listen', q: 'Ouça e escolha a profissão.', say: "I'm an accountant.", o: ['contador(a)', 'arquiteto(a)', 'advogado(a)'], a: 0,
+      ok: 'Accountant é contador ou contadora: a-KÁUN-tant.', no: 'Você ouviu accountant: contador ou contadora.' },
+    { t: 'choice', q: 'Qual é a sílaba mais forte de engineer?', o: ['EN-dji-nir', 'en-DJI-nir', 'en-dji-NÍR'], a: 2,
+      ok: 'Isso: en-dji-NÍR, com força no final.', no: 'A sílaba forte é a última: en-dji-NÍR.' }
+  ];
+  let E = { i: 0, sel: null, order: [], checked: false, right: 0 };
+  function vEx() {
+    const x = EX[E.i];
+    let body = '';
+    if (x.t === 'choice' || x.t === 'listen') {
+      if (x.t === 'listen') {
+        body += tts ? '<button class="listen" data-act="listen" aria-label="Ouvir a frase">' + ICON.speaker + '</button><p class="muted center">Toque para ouvir</p>'
+                    : '<p class="bubble" style="text-align:center;font-weight:800;font-size:20px">“' + esc(x.say) + '”</p><p class="muted center" style="font-size:12px;margin-top:6px">O áudio não está disponível neste navegador; leia a frase.</p>';
+      }
+      body += '<div class="stack" style="margin-top:12px">' + x.o.map((o, k) => {
+        let cls = 'opt';
+        if (E.checked) { if (k === x.a) cls += ' right'; else if (k === E.sel) cls += ' wrong'; }
+        else if (k === E.sel) cls += ' sel';
+        return '<button class="' + cls + '" data-act="pick" data-k="' + k + '"' + (E.checked ? ' disabled' : '') + '>' + esc(o) + '</button>';
+      }).join('') + '</div>';
+    } else {
+      const used = E.order;
+      body += '<div class="answerline" aria-label="Sua frase">' + used.map((k, j) => '<button class="chip" data-act="unorder" data-j="' + j + '"' + (E.checked ? ' disabled' : '') + '>' + esc(x.w[k]) + '</button>').join('') + '</div>' +
+        '<div class="chips" style="margin-top:18px">' + x.w.map((w, k) => used.includes(k) ? '' : '<button class="chip" data-act="order" data-k="' + k + '"' + (E.checked ? ' disabled' : '') + '>' + esc(w) + '</button>').join('') + '</div>';
+    }
+    const ready = (x.t === 'order') ? E.order.length === x.w.length : E.sel !== null;
+    let fb = '';
+    if (E.checked) {
+      const ok = isRight();
+      fb = '<div class="fb ' + (ok ? 'ok' : 'no') + '"><b>' + (ok ? 'MUITO BEM!' : 'QUASE! SÓ UM AJUSTE') + '</b><p>' + esc(ok ? x.ok : x.no) + '</p></div>';
+    }
+    return '<section class="screen">' + top('Exercícios', 'trail') +
+      '<div class="bar" style="margin:8px 0 14px"><div style="width:' + Math.round(E.i / EX.length * 100) + '%"></div></div>' +
+      '<p class="muted">Questão ' + (E.i + 1) + ' de ' + EX.length + '</p><p class="q">' + esc(x.q) + '</p>' + body +
+      '<span class="grow"></span><div class="stack" style="margin-top:16px">' + fb +
+      (E.checked ? '<button class="btn primary" data-act="next">' + (E.i + 1 < EX.length ? 'Continuar' : 'Ver resultado') + '</button>'
+                 : '<button class="btn primary" data-act="check"' + (ready ? '' : ' disabled') + '>Verificar</button>') +
+      '</div></section>';
+  }
+  function isRight() { const x = EX[E.i]; return x.t === 'order' ? E.order.map(k => x.w[k]).join(' ') === x.a : E.sel === x.a; }
+  function vExDone() {
+    const s = S.score || 0;
+    return '<section class="screen center" style="justify-content:center;gap:14px">' +
+      '<img class="avatar" src="' + AV('apontando') + '" width="190" height="190" alt="Teacher Pedro apontando para você">' +
+      '<h1>' + (s >= 6 ? 'Excelente!' : s >= 4 ? 'Muito bem!' : 'Bom começo!') + '</h1>' +
+      '<p class="muted">Você acertou <b style="color:var(--cyan)">' + s + ' de ' + EX.length + '</b>. Agora vamos usar tudo isso numa conversa de verdade.</p>' +
+      '<div class="stack" style="width:100%;margin-top:10px"><button class="btn orange" data-go="coach"><span>Conversar com o Teacher Pedro<small>Por voz · 3 min</small></span></button>' +
+      '<button class="btn ghost" data-act="redo">Refazer os exercícios</button></div></section>';
+  }
+
+  // ---------- coach: conversa por voz (agente ElevenLabs) ----------
+  const AGENT_ID = 'agent_4401m78rwn5yfsyrd6fe5r7exfww';
+  const newC = () => ({ status: 'idle', mode: 'listening', msgs: [], err: '', log: false });
+  let C = newC(), EL = null, conv = null;
+  let listening = false; function stopDictation() {}
+  function wireDictation() {}
+  function vCoach() {
+    const st = C.status;
+    const pose = st === 'connected' ? (C.mode === 'speaking' ? 'sorrindo' : 'pensando') : (st === 'ended' ? 'apontando' : 'sorrindo');
+    const status = st === 'idle' ? 'Conversa por voz · cerca de 3 minutos'
+      : st === 'connecting' ? 'Conectando…'
+      : st === 'connected' ? (C.mode === 'speaking' ? 'Teacher Pedro está falando…' : 'Sua vez: responda em voz alta')
+      : st === 'ended' ? 'Conversa encerrada' : 'Não foi possível conectar';
+    const lastC = [...C.msgs].reverse().find(m => m.r === 'c');
+    const lastU = [...C.msgs].reverse().find(m => m.r === 'u');
+    const said = C.msgs.some(m => m.r === 'u');
+    let main;
+    if (C.log) {
+      main = '<div class="chat" id="chat">' + (C.msgs.length ? C.msgs.map(m => '<div class="msg ' + m.r + '">' + esc(m.t) + '</div>').join('') : '<p class="muted center">A conversa ainda não começou.</p>') + '</div>' +
+        '<button class="btn ghost" data-act="log">Voltar</button>';
+    } else {
+      main = '<div class="stack" style="margin-top:12px">' +
+        (st === 'idle' ? '<p class="muted center">Uma conversa falada de verdade, com o Teacher Pedro. Responda em voz alta, em inglês, com frases curtas. Use fone de ouvido se estiver num lugar barulhento.</p>' : '') +
+        (st === 'error' ? '<div class="fb no"><b>ATENÇÃO</b><p>' + esc(C.err) + '</p></div>' : '') +
+        (lastC ? '<div class="msg c" style="max-width:100%" id="lastc">' + esc(lastC.t) + '</div>' : '') +
+        (lastU ? '<div class="msg u" style="max-width:100%" id="lastu">' + esc(lastU.t) + '</div>' : '') +
+        '</div><span class="grow"></span><div class="stack" style="margin-top:12px">' +
+        (st === 'idle' || st === 'error' ? '<button class="btn orange" data-act="vstart">' + ICON.mic + '<span>' + (st === 'error' ? 'Tentar de novo' : 'Começar a conversa') + '<small>Permita o uso do microfone</small></span></button>' : '') +
+        (st === 'connecting' ? '<button class="btn ghost" disabled>Conectando…</button>' : '') +
+        (st === 'connected' ? '<button class="btn ghost" data-act="vend">Encerrar a conversa</button>' : '') +
+        (st === 'ended' ? (said ? '<button class="btn orange" data-act="finish">Concluir a lição</button>' : '') + '<button class="btn ghost" data-act="vstart">Conversar de novo</button>' : '') +
+        '</div><div class="center" style="margin-top:6px"><button class="link" data-act="log">Ver a conversa completa</button></div>';
+    }
+    return '<section class="screen" style="padding-bottom:12px">' +
+      '<div class="top"><button class="iconbtn" data-go="trail" aria-label="Voltar">' + ICON.back + '</button><span class="grow"></span><span class="pill">Conversa com o coach</span></div>' +
+      '<div class="center" style="margin-top:4px"><img class="avatar' + (st === 'connected' && C.mode === 'speaking' ? ' talking' : '') + '" src="' + AV(pose) + '" width="160" height="160" alt="Teacher Pedro">' +
+      '<b style="font-size:20px;font-weight:900;margin-top:10px">Teacher Pedro</b><span class="muted" style="font-size:13px;margin-top:2px">' + status + '</span></div>' +
+      main + '</section>';
+  }
+  function updVoice() {
+    if (screen !== 'coach') return;
+    if (C.log) { render(); return; }
+    const lc = [...C.msgs].reverse().find(m => m.r === 'c'), lu = [...C.msgs].reverse().find(m => m.r === 'u');
+    const a = document.getElementById('lastc'), b = document.getElementById('lastu');
+    if ((lc && !a) || (lu && !b)) { render(); return; }
+    if (a && lc) a.textContent = lc.t; if (b && lu) b.textContent = lu.t;
+  }
+  async function startVoice() {
+    C = Object.assign(newC(), { status: 'connecting' }); render();
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (e) {
+      C.status = 'error'; C.err = 'Para conversar, permita o uso do microfone nas configurações do navegador.'; render(); return;
+    }
+    try {
+      if (!EL) EL = await import('https://esm.sh/@elevenlabs/client');
+      conv = await EL.Conversation.startSession({
+        agentId: AGENT_ID,
+        onConnect: () => { C.status = 'connected'; render(); },
+        onDisconnect: () => { conv = null; if (C.status !== 'error') C.status = 'ended'; render(); },
+        onMessage: (m) => { if (m && m.message) { C.msgs.push({ r: m.source === 'user' ? 'u' : 'c', t: m.message }); updVoice(); } },
+        onModeChange: (m) => { if (m && m.mode) { C.mode = m.mode; render(); } },
+        onError: (e) => { console.warn(e); }
+      });
+    } catch (e) {
+      C.status = 'error'; C.err = 'Não foi possível conectar com o Teacher Pedro. Verifique a internet e tente de novo.'; render();
+    }
+  }
+  async function endVoice() { if (conv) { try { await conv.endSession(); } catch (e) {} conv = null; } }
+
+  function vDone() {
+    return '<section class="screen center" style="justify-content:center;gap:14px">' +
+      '<img class="avatar" src="' + AV('sorrindo') + '" width="190" height="190" alt="Teacher Pedro sorrindo">' +
+      '<span class="pill">Lição 1 concluída</span><h1>Muito bem, ' + esc(S.name) + '!</h1>' +
+      '<div class="stack" style="width:100%;margin-top:6px">' +
+      '<div class="stat">Videoaulas <span>2 de 2</span></div>' +
+      '<div class="stat">Exercícios <span>' + (S.score ?? 0) + ' de ' + EX.length + '</span></div>' +
+      '<div class="stat">Conversa com o coach <span>Feita</span></div></div>' +
+      '<p class="muted" style="margin-top:6px">Amanhã o Teacher Pedro volta com uma revisão rápida de 3 minutos.</p>' +
+      '<button class="btn primary" data-go="home" style="margin-top:8px">Voltar ao início</button></section>';
+  }
+
+  // ---------- render & events ----------
+  let lastScreen = null;
+  function render() {
+    const V = { welcome: vWelcome, home: vHome, trail: vTrail, v1: () => vVideo('v1'), v2: () => vVideo('v2'), ex: vEx, exdone: vExDone, coach: vCoach, done: vDone };
+    $app.classList.toggle('enter', screen !== lastScreen); lastScreen = screen;
+    $app.innerHTML = (V[screen] || vHome)();
+    if (screen === 'coach') { const ch = document.getElementById('chat'); if (ch) ch.scrollTop = ch.scrollHeight; }
+    const vid = document.getElementById('vid');
+    if (vid) vid.addEventListener('ended', () => { const id = document.getElementById('vdone').dataset.id; S.done[id] = true; save(); document.getElementById('vdone').textContent = 'Continuar'; });
+    const wf = document.getElementById('wf');
+    if (wf) wf.addEventListener('submit', e => { e.preventDefault(); const v = document.getElementById('nm').value.trim(); if (!v) { document.getElementById('nmErr').style.display = 'block'; return; } S.name = v; save(); go('home'); });
+    const nm = document.getElementById('nm'); if (nm) nm.addEventListener('input', () => { document.getElementById('nmErr').style.display = 'none'; });
+    const cf = document.getElementById('cf');
+  }
+
+  $app.addEventListener('click', e => {
+    const b = e.target.closest('[data-go],[data-act]'); if (!b || b.disabled) return;
+    if (b.dataset.go) {
+      const to = b.dataset.go;
+      if (to === 'ex') { E = { i: 0, sel: null, order: [], checked: false, right: 0 }; if (S.done.ex) { go('exdone'); return; } }
+      go(to); return;
+    }
+    const a = b.dataset.act;
+    if (a === 'vdone') { S.done[b.dataset.id] = true; save(); const n = nextStep(); go(n ? n.go : 'done'); }
+    else if (a === 'pick') { E.sel = +b.dataset.k; render(); }
+    else if (a === 'order') { E.order.push(+b.dataset.k); render(); }
+    else if (a === 'unorder') { E.order.splice(+b.dataset.j, 1); render(); }
+    else if (a === 'check') { E.checked = true; if (isRight()) E.right++; render(); }
+    else if (a === 'next') { if (E.i + 1 < EX.length) { E = { i: E.i + 1, sel: null, order: [], checked: false, right: E.right }; render(); } else { S.score = E.right; S.done.ex = true; save(); go('exdone'); } }
+    else if (a === 'redo') { E = { i: 0, sel: null, order: [], checked: false, right: 0 }; go('ex'); }
+    else if (a === 'listen') { if (tts) tts.speak(EX[E.i].say, { language: 'en', rate: 0.9 }).catch(() => {}); }
+    else if (a === 'vstart') { startVoice(); }
+    else if (a === 'vend') { endVoice(); }
+    else if (a === 'log') { C.log = !C.log; render(); }
+    else if (a === 'finish') { endVoice(); S.done.coach = true; save(); C = newC(); const n = nextStep(); go(n ? 'home' : 'done'); }
+    else if (a === 'reset') { S.done = {}; S.score = null; save(); C = newC(); go('home'); }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
